@@ -1,0 +1,1771 @@
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Group A: Practical No.4
+
+Unnamed Pl/Sql code block
+******************************************************************************
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Grade              |
+| abc                |
+| abcd               |
+| akki               |
+| borrower           |
+| car                |
+| circle             |
+| clg                |
+| collage            |
+| college            |
+| company            |
+| company_employee   |
+| computer           |
+| doctor             |
+| employee           |
+| lib1               |
+| mayur              |
+| mysql              |
+| newABC             |
+| newemp             |
+| pbd                |
+| performance_schema |
+| pqr                |
+| shop               |
+| shree_doctor       |
+| sndcoe             |
+| sys                |
+| vaibhav            |
++--------------------+
+29 rows in set (0.00 sec)
+
+mysql> use borrower;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+
+mysql> delimiter //
+
+
+mysql> show tables //
++--------------------+
+| Tables_in_borrower |
++--------------------+
+| Fine               |
+| borrower           |
++--------------------+
+2 rows in set (0.00 sec)
+
+
+mysql> select * from borrower //
++---------+----------+--------------+--------+------------+
+| Roll_no | Name     | Name_of_Book | Status | DOI        |
++---------+----------+--------------+--------+------------+
+|       1 | Neha     | dbms         | I      | 2021-09-08 |
+|       2 | Priya    | oop          | I      | 2021-10-22 |
+|       3 | aashish  | spos         | I      | 2021-11-24 |
+|       4 | Yashika  | toc          | I      | 2021-10-12 |
+|       5 | priyanka | cns          | I      | 2020-09-08 |
++---------+----------+--------------+--------+------------+
+5 rows in set (0.00 sec)
+
+
+*******************************************************************
+PROCEDURE
+
+mysql> create procedure cal_Fine(rno int)
+-> begin
+-> declare Fine int;
+-> declare nodays int;
+-> declare issuedate date;
+-> select DOI into issuedate from borrower where Roll_no=rno;
+-> set nodays=datediff(curdate(),issuedate);
+-> if nodays>15 and nodays<30 then
+-> set Fine=(nodays-15)*5;
+-> else if nodays>30 then
+-> set Fine=(((nodays-15)-(nodays-30))*5)+(nodays-30)*50;
+-> end if;
+-> end if;
+-> if Fine>0 then
+-> insert into Fine values(rno,curdate(),Fine);
+-> end if;
+-> update borrower set status='R' where Roll_no=rno;
+-> end;
+-> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call cal_fine(1)//
+Query OK, 1 row affected (0.13 sec)
+
+
+
+mysql> select * from Fine//
++---------+------------+-------+
+| Roll_no | DOB        | amt   |
++---------+------------+-------+
+|       1 | 2022-09-23 | 17575 |
++---------+------------+-------+
+row in set (0.00 sec)
+
+mysql> call cal_fine(2)//
+Query OK, 1 row affected (0.18 sec)
+
+mysql> select * from Fine//
++---------+------------+-------+
+| Roll_no | DOB        | amt   |
++---------+------------+-------+
+|       1 | 2022-09-23 | 17575 |
+|       2 | 2022-09-23 | 15375 |
++---------+------------+-------+
+rows in set (0.00 sec)
+
+mysql> select * from borrower//
++---------+----------+--------------+--------+------------+
+| Roll_no | Name     | Name_of_Book | Status | DOI        |
++---------+----------+--------------+--------+------------+
+|       1 | Neha     | dbms         | R      | 2021-09-08 |
+|       2 | Priya    | oop          | R      | 2021-10-22 |
+|       3 | aashish  | spos         | I      | 2021-11-24 |
+|       4 | Yashika  | toc          | I      | 2021-10-12 |
+|       5 | priyanka | cns          | I      | 2020-09-08 |
++---------+----------+--------------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> call cal_fine(3)//
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from Fine//
++---------+------------+-------+
+| Roll_no | DOB        | amt   |
++---------+------------+-------+
+|       1 | 2022-09-23 | 17575 |
+|       2 | 2022-09-23 | 15375 |
+|       3 | 2022-09-23 | 13725 |
++---------+------------+-------+
+rows in set (0.00 sec)
+
+mysql> call cal_fine(4)//
+Query OK, 1 row affected (0.16 sec)
+
+mysql> call cal_fine(5)//
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from Fine//
++---------+------------+-------+
+| Roll_no | DOB        | amt   |
++---------+------------+-------+
+|       1 | 2022-09-23 | 17575 |
+|       2 | 2022-09-23 | 15375 |
+|       3 | 2022-09-23 | 13725 |
+|       4 | 2022-09-23 | 15875 |
+|       5 | 2022-09-23 | 35825 |
++---------+------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from borrower//
++---------+----------+--------------+--------+------------+
+| Roll_no | Name     | Name_of_Book | Status | DOI        |
++---------+----------+--------------+--------+------------+
+|       1 | Neha     | dbms         | R      | 2021-09-08 |
+|       2 | Priya    | oop          | R      | 2021-10-22 |
+|       3 | aashish  | spos         | R      | 2021-11-24 |
+|       4 | Yashika  | toc          | R      | 2021-10-12 |
+|       5 | priyanka | cns          | R      | 2020-09-08 |
++---------+----------+--------------+--------+------------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Practicl No.05
+
+Title:write a PL/SQL code block to calculate area of a circle for a value of radius varying from 5 to 9. Store radius and the corresponding values of calculated area in an empty table areas, consisting of two columns, radius and area.
+************************************************************************************************
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Circle             |
+| Customer           |
+| Grade              |
+| Library            |
+| LibraryDB          |
+| abhi               |
+| borrower           |
+| circle             |
+|                    |
++--------------------+
+17 rows in set (0.00 sec)
+
+USE DATABASE:
+
+mysql> use Circle;
+Database changed
+mysql> delimiter//
+    -> ^C
+mysql> delimiter //
+
+SHOW TABLES:
+
+mysql> show tables//
++------------------+
+| Tables_in_Circle |
++------------------+
+| Area             |
++------------------+
+1 row in set (0.00 sec)
+
+CREATE PROCEDURE:
+
+mysql> create procedure Area_Circle(IN radius float(6,2))
+    -> begin
+    -> declare Area float(6,2);
+    -> set Area=3.142*radius*radius;
+    -> insert into Area value(radius,Area);
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call Area_Circle(5)//
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from Area//
+
+
+
++--------+-------+
+| radius | Area  |
++--------+-------+
+|      5 | 78.55 |
++--------+-------+
+2 rows in set (0.00 sec)
+
+mysql> call Area_Circle(6)//
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call Area_Circle(7)//
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call Area_Circle(8)//
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call Area_Circle(9)//
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call Area_Circle(10)//
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call Area_Circle(4)//
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Area//
++--------+--------+
+| radius | Area   |
++--------+--------+
+|      5 |  78.55 |
+|      5 |  78.55 |
+|      6 | 113.11 |
+|      7 | 153.96 |
+|      8 | 201.09 |
+|      9 |  254.5 |
+|     10 |  314.2 |
+|      4 |  50.27 |
++--------+--------+
+8 rows in set (0.00 sec)
+
+mysql> Exit
+Bye
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Group A: Practical No. 6
+
+Named Pl/Sql block – Pl/Sql stored procedure and stored function
+*************************************************************************
+Stored Procedure:-
+
+mysql> create database marks;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use marks;
+Database changed
+
+mysql> create table studmarks(name varchar(20),total_marks integer);
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> create table result(roll_no integer,name varchar(20),class varchar(25));
+Query OK, 0 rows affected (0.33 sec)
+
+Creating Procedure:-
+
+
+mysql> DELIMITER $
+mysql> create procedure proc_grade(in rollno tinyint,in name varchar(15),in marks int)
+-> begin
+-> declare class varchar(25);
+-> if marks>=990 and marks<=1500 then set class="Distinction";
+-> elseif marks<=989 and marks>=900 then set class="First Class";
+-> elseif marks<=899 and marks>=825 then set class="Second Class";
+-> elseif marks<=824 and marks>=700 then set class="Pass";
+-> else
+-> set class="Fail";
+-> end if;
+-> insert into studmarks values(name,marks);
+-> insert into result values(rollno,name,class);
+-> end$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER $
+mysql> call proc_grade(1,"Aryan",850);
+-> DELIMITER $
+Query OK, 1 row affected (0.10 sec)
+
+
+mysql> call proc_grade(2,"Peter",1000);
+-> DELIMITER $
+Query OK, 1 row affected (0.21 sec)
+
+
+mysql> select * from result;
+-> DELIMITER $
++---------+-------+--------------+
+| roll_no | name  | class        |
++---------+-------+--------------+
+|       1 | Aryan | Second Class |
+|       2 | Peter | Distinction  |
++---------+-------+--------------+
+2 rows in set (0.00 sec)
+
+
+mysql> call proc_grade(3,"Smith",834);
+-> DELIMITER $
+Query OK, 1 row affected (0.10 sec)
+
+
+mysql> call proc_grade(4,"Carol",750);
+->  DELIMITER $
+Query OK, 1 row affected (0.21 sec)
+
+
+mysql> call proc_grade(5,"Bob",950);
+-> DELIMITER $
+Query OK, 1 row affected (0.40 sec)
+
+
+mysql> select * from result;
+-> DELIMITER $
++---------+-------+--------------+
+| roll_no | name  | class        |
++---------+-------+--------------+
+|       1 | Aryan | Second Class |
+|       2 | Peter | Distinction  |
+|       3 | Smith | Second Class |
+|       4 | Carol | Pass         |
+|       5 | Bob   | First Class  |
++---------+-------+--------------+
+5 rows in set (0.03 sec)
+
+
+mysql> select * from studmarks;
+-> DELIMITER $
++-------+-------------+
+| name  | total_marks |
++-------+-------------+
+| Aryan |         850 |
+| Peter |        1000 |
+| Smith |         834 |
+| Carol |         750 |
+| Bob   |         950 |
++-------+-------------+
+5 rows in set (0.00 sec)
+
+Stored Function:-
+
+Create Function:-
+
+mysql> DELIMITER $
+mysql> create function tot_stud(classname varchar(25))
+-> returns int
+-> BEGIN
+-> DECLARE TOTAL INT(20);
+-> SELECT DISTINCT COUNT(*) INTO TOTAL FROM result where class=classname;
+-> return TOTAL;
+-> end $
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> SET GLOBAL log_bin_trust_function_creators = 1;
+-> DELIMITER $
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+
+mysql> create function tot_stud1(classname varchar(25))
+-> returns int
+-> begin
+-> declare total int(20);
+-> select distinct count(*) into total from result where class=classname;
+-> return total;
+-> end $
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select tot_stud1("Second Class");
+-> DELIMITER $
++---------------------------+
+| tot_stud1("Second Class") |
++---------------------------+
+|                         2 |
++---------------------------+
+row in set (0.11 sec)
+
+
+mysql> select tot_stud("Pass");
+->  DELIMITER $
++------------------+
+| tot_stud("Pass") |
++------------------+
+|                1 |
++------------------+
+row in set (0.00 sec)
+
+
+mysql> select tot_stud("First Class");
+-> DELIMITER $
++-------------------------+
+| tot_stud("First Class") |
++-------------------------+
+|                       1 |
++-------------------------+
+row in set (0.00 sec)
+
+
+
+
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Group A: Practical no. 7
+
+Cursor- All type :Implicit,Explicit,Cursor for loop,Parameterised Cursor
+*************************************************************************
+mysql> show databases;
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| Grade              |
+| abc                |
+| abcd               |
+| akki               |
+| borrower           |
+| car                |
+| circle             |
+| clg                |
+| collage            |
+| college            |
+| company            |
+| company_employee   |
+| computer           |
+| doctor             |
+| employee           |
+| lib1               |
+| marks              |
+| mayur              |
+| mysql              |
+| newABC             |
+| newemp             |
+| pbd                |
+| performance_schema |
+| pqr                |
+| sharda             |
+| shop               |
+| shree_doctor       |
+| sndcoe             |
+| sys                |
+| vaibhav            |
++--------------------+
+31 rows in set (0.14 sec)
+
+
+mysql> use sndcoe;
+
+Database changed
+
+mysql> create table N_Roll_Call(Rno int(20),Name char(20),Address varchar(30));
+Query OK, 0 rows affected (0.33 sec)
+
+
+mysql> create table P_Roll_Call(Rno int(20) primary key,Name char(20),Address varchar(30));
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> desc N_Roll_Call;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| Rno     | int(20)     | YES  |     | NULL    |       |
+| Name    | char(20)    | YES  |     | NULL    |       |
+| Address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc P_Roll_Call;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| Rno     | int(20)     | NO   | PRI | NULL    |       |
+| Name    | char(20)    | YES  |     | NULL    |       |
+| Address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into N_Roll_Call values(01,'priya',"Nashik),^C
+mysql>  insert into N_Roll_Call values(01,'priya',"Nashik);
+"> ^C
+mysql>  insert into N_Roll_Call values(01,'priya',"Nashik");
+Query OK, 1 row affected (0.05 sec)
+
+mysql>  insert into N_Roll_Call values(02,'hardik',"yeola");
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into N_Roll_Call values(03,'Aashish',"manmad");
+Query OK, 1 row affected (0.05 sec)
+
+mysql>  insert into N_Roll_Call values(04,'aayush',"pune");
+Query OK, 1 row affected (0.05 sec)
+
+mysql>  insert into P_Roll_Call values(01,'priya',"Nashik");
+Query OK, 1 row affected (0.03 sec)
+
+mysql>  insert into P_Roll_Call values(02,'hardik',"yeola");
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into P_Roll_Call values(03,'Aashish',"manmad");
+Query OK, 1 row affected (0.06 sec)
+
+mysql>  insert into P_Roll_Call values(04,'aayush',"pune");
+Query OK, 1 row affected (0.04 sec)
+
+
+mysql> DELIMITER $
+
+mysql> create procedure N1(In Rollno int)
+->     begin
+->     declare Rollno1 int;
+->     declare exit_cond boolean;
+->     declare c1 cursor for select Rno from P_Roll_Call where Rno>Rollno;
+->     declare continue handler for not found set exit_cond=TRUE;
+->     open c1;
+->     l1:loop
+->     fetch c1 into Rollno1;
+->     if not exists (select *from N_Roll_Call where Rno=Rollno1)then
+->     insert into N_Roll_Call select *from P_Roll_Call where Rno=Rollno1;
+->     end if;
+->     if exit_cond then
+->     close c1;
+->     leave l1;
+->     end if;
+->     end loop l1;
+->     end;
+->     //
+-> $
+Query OK, 0 rows affected, 3 warnings (0.05 sec)
+
+
+mysql> call N1 (3) $
+Query OK, 0 rows affected (0.05 sec)
+
+
+mysql> select *from N_Roll_Call $
++------+---------+---------+
+| Rno  | Name    | Address |
++------+---------+---------+
+|    1 | priya   | Nashik  |
+|    2 | hardik  | yeola   |
+|    3 | Aashish | manmad  |
+|    4 | aayush  | pune    |
++------+---------+---------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Group A: Practical no. 08
+
+Title : Database Trigger (All Types: Row level and Statement level triggers, Before and After Triggers). 
+
+
+
+mysql> use info;
+
+Reading table information for completion of table and column names You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql>    create    table    borrower2(roll_no    int,name    varchar(20),date_of_issue date,book varchar2);
+
+Query OK, 0 rows affected (0.44 sec)
+
+mysql>insert    into    borrower2    values('1','nick','2018-06- 10','wings_of_fire','avaliable','APJ');
+
+Query OK, 1 row affected (0.07 sec)
+
+mysql>    insert    into    borrower2    values('2','mira','2018-05- 11','leaves_life','not_avaliable','borwarkar');
+
+Query OK, 1 row affected (0.05 sec)
+
+mysql>    insert    into    borrower2    values('3','rina','2018-02- 12','unusal','avaliable','johar');
+
+Query OK, 1 row affected (0.04 sec)
+
+mysql>    insert    into    borrower2    values('4','harsha','2018-06- 20','skylimit','avaliable','ingale');
+
+Query OK, 1 row affected (0.05 sec)
+
+mysql>    insert    into    borrower2    values('5','tej','2018-04- 20','highway','not_avaliable','klm');
+
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select *from borrower1;
+_______________________________________________________________
+| roll_n | name    | date_of_issue   | book_name        | status              | author        |
+_______________________________________________________________
+
+|1          | nick     |2018-06-10        |  wings_of_fire  | available          | APJ            |
+  |2          | mira    | 2018-05-11       | leaves_life         | not_avaliable  | borwarkar |  
+|3          | rina      | 2018-02-12      |  unusal               | available          | johar         |
+|4          | harsha | 2018-06-20       |  skylimit            | available           | ingale       | 
+|5          | tej        | 2018-04-20      |  highway            |not_avaliable    | klm            | 
+_______________________________________________________________
+
+5 rows in set (0.00 sec)
+
+//INSERT TRIGGER
+
+
+mysql> delimiter //
+mysql> create trigger library after insert on borrower1 for each row
+-> begin
+-> insert into audit1 values(new.roll_no,new.name,new.date_of_issue,new.book_name,ne w.status,new.author,current_timestamp);
+-> end;
+-> //Query OK, 0 rows affected (0.10 sec)
+mysql> insert into borrower1 values('6','xyz','2018-09- 06','aaa','avaliable','xxx');
+-> //
+Query OK, 1 row affected (0.07 sec) mysql> select * from borrower1;
+-> //
+
+
+  -----------------------------------------------------------------------------------------------
+| roll_n | name    | date_of_issue   | book_name        | status              | author        |
+  -----------------------------------------------------------------------------------------------
+|1          | nick     |2018-06-10        |  wings_of_fire  | available          | APJ            |
+  |2          | mira    | 2018-05-11       | leaves_life          |not_avaliable  | borwarkar  |  
+|3          | rina      | 2018-02-12      |  unusal                |available          | johar          |
+|4          | harsha | 2018-06-20       |  skylimit             |available           | ingale        | 
+|5          | tej        | 2018-04-20      |  highway             |not_avaliable    | klm           | 
+|6          | xyz      | 2018-09-06      |  xyz                     |avaliable           |xxx             | 
+ --------------------------------------------------------------------------------------------------
+
+6 rows in set (0.00 sec)
+
+mysql> select * from audit1;
+-> //
+-----------------------------------------------------------------------------------------------------
+| roll_no | name | date_of_issue | book_name | status        |author|     ts                             |
+
+-----------------------------------------------------------------------------------------------------
+|6            | xyz    | 2018-09-06    | aaa               | avaliable | xxx     | 2018-08-29 15:46:13 |
+
+-----------------------------------------------------------------------------------------------------
+1 row in set (0.00 sec)
+
+// UPDATE TRIGGER
+mysql> delimiter //
+mysql> create trigger library1 after update on borrower1 for each row
+-> begin
+->insert into audit1 values(new.roll_no,new.name,new.date_of_issue,new.book_name,new.status,new.author,current_timestamp);
+-> end;
+-> //
+
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> update borrower1 set roll_no='8',book_name='leaf' where name='xyz';
+-> //
+Query OK, 1 row affected (0.04 sec) Rows matched: 1 Changed: 1 Warnings: 0
+
+
+
+
+
+mysql> select *from borrower1;
+-> //
+
+
+  -----------------------------------------------------------------------------------------------
+| roll_n | name    | date_of_issue   | book_name        | status              | author        |
+  -----------------------------------------------------------------------------------------------
+|1          | nick     |2018-06-10        |  wings_of_fire  | available          | APJ            |
+  |2          | mira    | 2018-05-11       | leaves_life          |not_avaliable  | borwarkar  |  
+|3          | rina      | 2018-02-12      |  unusal                |available          | johar          |
+|4          | harsha | 2018-06-20       |  skylimit             |available           | ingale        | 
+|5          | tej        | 2018-04-20       |  highway            |not_avaliable    | klm           | 
+|88         | xyz      | 2018-09-06      |  leaf                    |avaliable           |xxx             | 
+  -----------------------------------------------------------------------------------------------
+
+
+6 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Name: Kadlag Narendra Vilas Roll no :05
+Group A: Practical no. 09
+
+Title : Implement MYSQL/Oracle database connectivity with PHP/ python/Java Implement Database navigation operations (add, delete, edit,) using ODBC/JDBC.
+****************************************************************
+
+import java.awt.*; import java.awt.event.*; import java.sql.Connection; import java.sql.DriverManager; import java.sql.ResultSet; import java.sql.Statement; import javax.swing.*;
+public class student extends JFrame implements ActionListener{
+JFrame f;
+JLabel l1, l2,l3,l4; JTextField t1, t2,t3; JButton b1, b2, b3, b4, b5; Connection c;
+Statement s; ResultSet r; student ()
+{try{
+f=new JFrame("Student Form"); f.setLayout(null);f.setVisible(true);
+f.setSize(700, 500); l4=new JLabel("Student Management System");
+//l4.setBounds(100,01,250,250); l4.setBounds(100, 30, 400, 30); f.add(l4); l4.setForeground(Color.blue); l4.setFont(new Font("Serif", Font.BOLD,
+30));
+l1=new JLabel("Stud_RollNo"); l1.setBounds(50, 70, 100, 50);f.add(l1); l2=new JLabel("Stud_Name"); l2.setBounds(50, 120, 100, 50);
+f.add(l2);
+l3=new JLabel("Stud_Dept"); l3.setBounds(50, 170, 100, 50); f.add(l3); t1=new JTextField(); t1.setBounds(150, 90, 100, 30); f.add(t1); t2=new JTextField(); t2.setBounds(150, 140, 100, 30); f.add(t2);t3=new JTextField(); t3.setBounds(150, 190, 100, 30);
+
+f.add(t3); b1= new JButton("ADD"); b1.setBounds(200, 300, 75, 50); f.add(b1); b1.addActionListener(this); b2= new JButton("EDIT"); b2.setBounds(300, 300, 75, 50); f.add(b2); b2.addActionListener(this);
+b3= new JButton("DELETE");b3.setBounds(400, 300, 75, 50); f.add(b3); b3.addActionListener(this); b5= new JButton("EXIT"); b5.setBounds(500, 300, 75, 50); f.add(b5);
+b5.addActionListener(this); Class.forName("com.mysql.jdbc.Driver"); c=DriverManager.getConnection("jdbc:mysql://loca lhost:3306/info","root","root");s=c.createStatement();
+}catch(Exception e){System.out.println(e);}
+}//ends INS Constructor
+public void actionPerformed(ActionEvent ae){ try{ if(ae.getSource()==b1){String s1="INSERT INTO result(stud_RollNo,stud_Name,stud_Dept) VALUES("+t1.getText()+",'"+t2.getText()
++"','"+t3.getText() + "')"; System.out.println(s1); s.executeUpdate(s1); r=s.executeQuery("SELECT * FROM result");
+
+t1.setText(""); t2.setText(""); t3.setText("");
+}else if(ae.getSource()==b2){ String s2="UPDATE user1 SET stud_Name='"+t2.getText()+"' WHERE stud_RollNo="+t1.getText(); System.out.println(s2); s.executeUpdate(s2); r=s.executeQuery("SELECT * FROM result");
+t1.setText(""); t2.setText("");t3.setText("");
+}else if(ae.getSource()==b3){ String s3="DELETE FROM result WHERE stud_RollNo="+t1.getText();
+
+System.out.println(s3); s.executeUpdate(s3); r=s.executeQuery("SELECT * FROM result");
+t1.setText(""); t2.setText("");
+t3.setText("");}else if(ae.getSource()==b5){System.exit(0); }
+}catch(Exception e){System.out.println(e);}
+}
+public static void main(String args[]){ new student();
+}}
+
+
+     Output     sl2-pc5@sl2pc5-HP-Compaq-4000-Pro-SFF-PC:~$
+mysql -u root -p Enter password:
+Welcome to the MySQL monitor. Commands end with ; or \g.
+Your MySQL connection id is 42
+Server version: 5.5.61-0ubuntu0.14.04.1 (Ubuntu) Copyright
+(c) 2000, 2018, Oracle and/or its affiliates. All rights reserved. Oracle is a registered trademark of Oracle
+Corporation and/or itsaffiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> create database info; Query OK, 1 row affected (0.03 sec)
+mysql> use info; Database changed mysql> create table result (stud_RollNo int,stud_Name varchar(20),stud_Dept varchar(20));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> select *from result;
++    +    +    +
+| stud_RollNo | stud_Name | stud_Dept |
++    +    +    +
+| 1    | abc    | comp    |
++    +    +    + 1 row in set (0.00 sec)
+
+//ADD DATA
+mysql> select *from result;
++    +    +    +
+| stud_RollNo | stud_Name | stud_Dept |
++    +    +    +
+
+| 1
+| abc
+| comp
+|
+| 2
+| harsha
+| comp
+|
+|
+| tej
+| mech
+|
+|
+| rina
+| comp
+|
+
++    +    +    + 4 rows in set (0.00 sec)
+
+
+//DELETE DATA
+mysql> select *from result;
++    +    +    +
+| stud_RollNo | stud_Name | stud_Dept |
++    +    +    +
+
+|1
+| harsha
+| comp
+|
+| 2
+| tej
+| comp
+|
+| 3
+| rina
+| mech
+|
+
++    +    +    + 3 rows in set (0.00 sec)
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Group B:-Practical  No. 01
+Title : Design and Develop MongoDB Queries using CRUD operations. (Use CRUD operations, SAVE method, logical operators)
+
+dipti@dipti-VPCEG28FN:~$ mongo MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017 MongoDB server version: 3.6.3
+Server has startup warnings:
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten]
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten] ** WARNING:
+Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten] **    See http://dochub.mongodb.org/core/prodnotes-filesystem
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten]
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten] ** WARNING:
+Access control is not enabled for the database.
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten] **    Read and write access to data and configuration is unrestricted.
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten]
+>
+use Abhi; switched to db Abhi
+
+db.createCollection('Student');
+{ "ok" : 1 }
+
+db.Student.insert({'Rno':'1','Name':'Piyush','Class':'TE COMP'}); WriteResult({ "nInserted" : 1 })
+
+db.Student.insert({'Rno':'2','Name':'Abhi','Class':'TE COMP'}); WriteResult({ "nInserted" : 1 })
+
+>db.Student.insert({'Rno':'3','Name':'Ashley','Class':'TE COMP'}); WriteResult({ "nInserted" : 1 })
+
+db.Student.insert({'Rno':'4','Name':'Hitesh','Class':'TE COMP'}); WriteResult({ "nInserted" : 1 })
+
+db.Student.insert({'Rno':'5','Name':'Pratik','Class':'TE COMP'}); WriteResult({ "nInserted" : 1 })
+
+db.Student.insert({'Rno':'6','Name':'Pratik','Class':'TE COMP'}); WriteResult({ "nInserted" : 1 })
+
+db.Student.find();
+{ "_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1", "Name" : "Piyush", "Class" : "TE COMP" }
+{ "_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2", "Name" : "Abhi", "Class" : "TE COMP" }
+{ "_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3", "Name" : "Ashley", "Class" : "TE COMP" }
+{ "_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4", "Name" : "Hitesh", "Class" : "TE COMP" }
+{ "_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5", "Name" : "Pratik", "Class" : "TE COMP" }
+{ "_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6", "Name" : "Pratik", "Class" : "TE COMP" }
+
+db.Student.find().pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1",
+"Name" : "Piyush",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2","Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+
+db.Student.update({'Name':'Hitesh'},{$set: {'Name':'Henry'}}); WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1})
+
+db.Student.find().pretty();
+{
+"_id" : ObjectId("5b8fad4ef00832a0a50b5036"), "Rno" : "1",
+"Name" : "Piyush",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad62f00832a0a50b5037"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad70f00832a0a50b5038"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad7ff00832a0a50b5039"), "Rno" : "4",
+"Name" : "Henry",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad8df00832a0a50b503a"),
+
+"Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fada4f00832a0a50b503b"),"Rno" : "6", "Name" : "Pratik",
+"Class" : "TE COMP"
+}
+
+db.Student.remove({'ADD':'MP'}); WriteResult({ "nRemoved" : 1 })
+
+db.Student.find().pretty();
+{
+"_id" : ObjectId("5b8fad62f00832a0a50b5037"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad70f00832a0a50b5038"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad7ff00832a0a50b5039"), "Rno" : "4",
+"Name" : "Henry",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad8df00832a0a50b503a"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{"_id" : ObjectId("5b8fada4f00832a0a50b503b"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+
+>db.Student.save({_id:ObjectId("5b8fad4ef00832a0a50b5036"),"RNO ":"1","NAME":"PIYUSH","CLASS":"TE COMP","ADD":"MP"});
+
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1})
+
+db.Student.find().pretty();
+{
+"_id" : ObjectId("5b8fad4ef00832a0a50b5036"), "RNO" : "1",
+"NAME" : "PIYUSH",
+"CLASS" : "TE COMP",
+"ADD" : "MP"
+}
+{
+"_id" : ObjectId("5b8fad62f00832a0a50b5037"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad70f00832a0a50b5038"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad7ff00832a0a50b5039"), "Rno" : "4","Name" : "Henry",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fad8df00832a0a50b503a"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5b8fada4f00832a0a50b503b"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+
+db.Student.find({$and:[{"Name":"Piyush"},{"Rno":"2"}]});
+
+db.Student.find({$and:[{"Name":"Piyush"},
+{"Rno":"1"}]}).pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1",
+"Name" : "Piyush",
+"Class" : "TE COMP"
+}
+db.Student.find({$and:[{"Name":"Piyush"},{"Rno":"2"}]}).pretty();
+
+db.Student.find({$or:[{"Name":"Piyush"},{"Rno":"2"}]}).pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1",
+"Name" : "Piyush","Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+db.Student.find({$or:[{"Name":"Piyush"},{"Class":"TE COMP"}]}).pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1",
+"Name" : "Piyush",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+
+"Name" : "Hitesh","Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find({$nor:[{"Name":"Piyush"},{"Class":"TE COMP"}]}).pretty();
+
+db.Student.find({$nor:[{"Name":"Piyush"},
+{"Rno":"2"}]}).pretty();
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"),"Rno" : "5", "Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $not:{$lt:"3"}}}).pretty();
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"),
+
+"Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6","Name" : "Pratik",
+"Class" : "TE COMP"
+}
+
+db.Student.find( {"Rno": { $eq:"5"}}).pretty();
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+
+db.Student.find( {"Rno": { $ne:"5"}}).pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1",
+"Name" : "Piyush",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"),
+
+"Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4","Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $gt:"5"}}).pretty();
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $gte:"5"}}).pretty();
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d66df5bbacd4ad815692"), "Rno" : "6",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $lt:"5"}}).pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"),"Rno" : "1", "Name" : "Piyush",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2",
+"Name" : "Abhi",
+
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $lte:"5"}}).pretty();
+{
+"_id" : ObjectId("5ba1d618f5bbacd4ad81568d"), "Rno" : "1",
+"Name" : "Piyush",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2","Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $lt:"5",$gt:"2"}}).pretty();
+
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh","Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $lte:"5",$gte:"2"}}).pretty();
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $lte:"5",$gt:"2"}}).pretty();
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley","Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+
+"Name" : "Hitesh",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d65ef5bbacd4ad815691"), "Rno" : "5",
+"Name" : "Pratik",
+"Class" : "TE COMP"
+}
+db.Student.find( {"Rno": { $lt:"5",$gte:"2"}}).pretty();
+{
+"_id" : ObjectId("5ba1d625f5bbacd4ad81568e"), "Rno" : "2",
+"Name" : "Abhi",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d63af5bbacd4ad81568f"), "Rno" : "3",
+"Name" : "Ashley",
+"Class" : "TE COMP"
+}
+{
+"_id" : ObjectId("5ba1d647f5bbacd4ad815690"), "Rno" : "4",
+"Name" : "Hitesh",
+"Class" : "TE COMP"}
+
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+
+Group B:- Practical  No. 02
+Title :Implement aggregation and indexing with suitable example using MongoDB
+
+dipti@dipti-VPCEG28FN:~$ mongo MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017 MongoDB server version: 3.6.3
+Server has startup warnings:
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten]
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten] ** WARNING:
+Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten] **    See http://dochub.mongodb.org/core/prodnotes-filesystem
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten]
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten] ** WARNING:
+Access control is not enabled for the database.
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten] **    Read and write access to data and configuration is unrestricted.
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten]
+>
+//USE DATABASE
+use comp; switched to db comp
+//CREATE COLLECTION WEBSITE
+db.createCollection('website');
+{ "ok" : 1 }
+
+//INSERT VALUES IN WEBSITE
+>
+db.website.insert({'roll':'1','name':'harsh','amount':1000,'ur l':'www.yahoo.com'});
+WriteResult({ "nInserted" : 1 })
+
+>db.website.insert({'roll':'2','name':'jitesh','amount':2000,'url':'www.yahoo.com '});
+
+WriteResult({ "nInserted" : 1 })
+
+>db.website.insert({'roll':'3','name':'rina','amount':3000,'url':'www.google.com'
+});
+
+WriteResult({ "nInserted" : 1 })
+
+>db.website.insert({'roll':'4','name':'ash','amount':4000,'url':'www.gmail.com'})
+;
+WriteResult({ "nInserted" : 1 })
+
+>db.website.insert({'roll':'5','name':'ash','amount':1000,'url':'www.pvg.com'}); WriteResult({ "nInserted" : 1 })
+//SUM AGGREGATE
+
+db.website.aggregate({$group:{_id:"$name","total":{$sum:"$amount"}}});
+{ "_id" : "ash", "total" : 5000 }
+{ "_id" : "rina", "total" : 3000 }
+{ "_id" : "jitesh", "total" : 2000 }
+{ "_id" : "harsh", "total" : 2000 }
+
+//AVG AGGREGATE
+
+db.website.aggregate({$group:{_id:"$name","total":
+{$avg:"$amount"}}});
+{ "_id" : "ash", "total" : 2500 }
+{ "_id" : "rina", "total" : 3000 }
+{ "_id" : "jitesh", "total" : 2000 }
+{ "_id" : "harsh", "total" : 1000 }
+
+//MIN AGGREGATION
+
+db.website.aggregate({$group:{_id:"$name","total":{$min:"$amount"}}});
+{ "_id" : "ash", "total" : 1000 }
+{ "_id" : "rina", "total" : 3000 }
+{ "_id" : "jitesh", "total" : 2000 }
+{ "_id" : "harsh", "total" : 1000 }
+
+//MAX AGGREGATION
+
+db.website.aggregate({$group:{_id:"$name","total":{$max:"$amount"}}});
+{ "_id" : "ash", "total" : 4000 }
+{ "_id" : "rina", "total" : 3000 }
+{ "_id" : "jitesh", "total" : 2000 }
+{ "_id" : "harsh", "total" : 1000 }
+
+//FIRST AGGREGATION
+
+db.website.aggregate({$group:{_id:"$name","total":{$first:"$amount"}}});
+{ "_id" : "ash", "total" : 4000 }
+{ "_id" : "rina", "total" : 3000 }
+{ "_id" : "jitesh", "total" : 2000 }
+{ "_id" : "harsh", "total" : 1000 }
+
+//LAST AGGREGATION
+
+db.website.aggregate({$group:{_id:"$name","total":{$last:"$amount"}}});
+{ "_id" : "ash", "total" : 1000 }
+{ "_id" : "rina", "total" : 3000 }
+{ "_id" : "jitesh", "total" : 2000 }
+{ "_id" : "harsh", "total" : 1000 }
+
+//PUSH AGGREGATION
+
+db.website.aggregate({$group:{_id:"$name","total":
+{$push:"$amount"}}});
+{ "_id" : "ash", "total" : [ 4000, 1000 ] }
+{ "_id" : "rina", "total" : [ 3000 ] }
+{ "_id" : "jitesh", "total" : [ 2000 ] }
+{ "_id" : "harsh", "total" : [ 1000, 1000 ] }
+
+//COUNT AGGREGATION
+
+db.website.aggregate({$group:{_id:"$name","total": {$sum:1}}});
+{ "_id" : "ash", "total" : 2 }
+{ "_id" : "rina", "total" : 1 }
+{ "_id" : "jitesh", "total" : 1 }
+{ "_id" : "harsh", "total" : 2 }
+
+//ADDTOSET AGGREGATE
+
+db.website.aggregate({$group:
+{_id:"$name","total"{$addToSet:"$amount"}}});
+{ "_id" : "ash", "total" : [ 1000, 4000 ] }
+{ "_id" : "rina", "total" : [ 3000 ] }
+{ "_id" : "jitesh", "total" : [ 2000 ] }
+{ "_id" : "harsh", "total" : [ 1000 ] }
+
+
+//INDEXING
+
+db.createCollection('website1');
+{ "ok" : 1 }
+
+db.website1.insert({'r':1,'name':'harsh'}); WriteResult({ "nInserted" : 1 })
+
+db.website1.find().pretty()
+{ "_id" : ObjectId("5ba3509a444926329738012d"), "roll" : 1, "name" : "harsh" }
+{ "_id" : ObjectId("5ba35293444926329738012e"), "roll" : 1, "name" : "harsh" }
+
+db.website1.createIndex({'name':1})
+{ "numIndexesBefore" : 2, "note" : "all indexes already exist", "ok" : 1 }//CREATE INDEXING
+
+db.website1.createIndex({'name':-1})
+{
+"createdCollectionAutomatically" : false, "numIndexesBefore" : 2,
+"numIndexesAfter" : 3,
+"ok" : 1
+}
+
+db.website1.getIndexses()
+2018-09-20T13:28:09.628+0530 TypeError: Property 'getIndexses' of object om.website is not a
+function
+
+db.website1.getIndexes() [
+{"v" : 1,
+
+},
+{
+"v" : 1,
+"key" : {
+"name" : 1
+},
+"name" : "name_1", "ns" : "harsh.website1"
+},
+{
+"v" : 1,
+"key" : {
+"name" : -1
+},
+"name" : "name_-1", "ns" : "harsh.website1"
+}
+]
+db.website1.createIndex({'name':-1})
+{ "numIndexesBefore" : 3, "note" : "all indexes already exist", "ok" : 1 }
+
+//DROP INDEX
+
+db.website.dropIndex({'name':-1})
+{ "nIndexesWas" : 3, "ok" : 1 }> db.website1.dropIndex({'name':1})
+{ "nIndexesWas" : 2, "ok" : 1 }> db.website1.dropIndex({'name':1})
+{
+"nIndexesWas" : 1,
+"ok" : 0,
+"errmsg" : "can't find index with key:{ name: 1.0 }"
+}
+
+//GET INDEXING
+
+db.website1.getIndexes() [
+{
+"v" : 1,
+
+}
+]
+
+db.website1.find().pretty()
+{ "_id" : ObjectId("5ba3509a444926329738012d"), "roll" : 1, "name" : "harsh" }
+{ "_id" : ObjectId("5ba35293444926329738012e"), "roll" : 1, "name" : "harsh" }
+
+>
+db.website1.createIndex({'name':1})
+{
+"createdCollectionAutomatically" : false, "numIndexesBefore" : 1,
+"numIndexesAfter" : 2,
+"ok" : 1
+}
+
+db.website1.getIndexes()[
+{
+"v" : 1,
+"key" : {
+"_id" : 1
+},
+"name" : "_id_",
+"ns" : "harsh.website1"
+},
+{
+"v" : 1,
+"key" : {"name" : 1
+},
+"name" : "name_1", "ns" : "harsh.website1"
+}
+]
+
+db.website1.dropIndex({'name':1})
+{ "nIndexesWas" : 2, "ok" : 1 }
+
+db.website1.getIndexes() [
+
+{
+"v" : 1,
+"key" : {
+"_id" : 1
+},
+"name" : "_id_",
+"ns" : "harsh.website1"
+}
+]
+
+db.website1.createIndex({'name':1,'r':-1})
+{"createdCollectionAutomatically" : false, "numIndexesBefore" : 1,
+"numIndexesAfter" : 2,
+"ok" : 1
+}
+
+db.website1.getIndexes() [
+{
+"v" : 1,
+"key" : {
+"_id" : 1
+},
+"name" : "_id_",
+"ns" : "harsh.website1"
+},
+{
+"v" : 1,
+"key" : {
+"name" : 1,
+"r" : -1
+},
+"name" : "name_1_r_-1", "ns" : "harsh.website1"
+}
+] (i-search)`db.website1.insert({'roll':1,'name':'harsh'});':
+
+
+
+
+
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+Group B:-Practical No.03
+Title :Implement Map reduces operation with suitable example using MongoDB
+
+dipti@dipti-VPCEG28FN:~$ mongo MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017 MongoDB server version: 3.6.3
+Server has startup warnings:
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten]
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten] ** WARNING:
+Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2020-10-15T14:26:28.786+0530 I STORAGE [initandlisten] **    See http://dochub.mongodb.org/core/prodnotes-filesystem
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten]
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten] ** WARNING:
+Access control is not enabled for the database.
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten] **    Read and write access to data and configuration is unrestricted.
+2020-10-15T14:26:36.417+0530 I CONTROL [initandlisten]
+>
+use Abhi switched to db Abhi
+
+db.createCollection('Journal');
+{ "ok" : 1 }
+
+>db.Journal.insert({'book_id':1,'book_name':'JavacdOOP','amt':500,'status':'A vailable'});
+WriteResult({ "nInserted" : 1 })
+
+db.Journal.insert({'book_id':1,'book_name':'JavaOOP','amt':400,'status':'Not Available'});
+WriteResult({ "nInserted" : 1 })
+
+>db.Journal.insert({'book_id':1,'book_name':'Java','amt':300,'s tatus':'Not Available'});
+WriteResult({ "nInserted" : 1 })
+
+>db.Journal.insert({'book_id':2,'book_name':'Java','amt':300,'s tatus':'Available'});
+WriteResult({ "nInserted" : 1 })>
+
+>db.Journal.insert({'book_id':2,'book_name':'OPP','amt':200,'st atus':'Available'});
+WriteResult({ "nInserted" : 1 })
+
+>db.Journal.insert({'book_id':2,'book_name':'C+','amt':200,'status':'Available'}
+);
+WriteResult({ "nInserted" : 1 })
+
+>db.Journal.insert({'book_id':3,'book_name':'C+','amt':150,'status':'Available'}
+);
+WriteResult({ "nInserted" : 1 })
+
+db.Journal.insert({'book_id':3,'book_name':'C+
++','amt':200,'status':'Not Available'}); WriteResult({ "nInserted" : 1 })
+
+db.Journal.insert({'book_id':4,'book_name':'OPP C+
++','amt':300,'status':'Not Available'}); WriteResult({ "nInserted" : 1 })
+
+db.Journal.insert({'book_id':5,'book_name':'OPP C+
++','amt':400,'status':'Available'}); WriteResult({ "nInserted" : 1 })
+
+db.Journal.insert({'book_id':5,'book_name':'C+
++','amt':400,'status':'Available'}); WriteResult({ "nInserted" : 1 })
+
+db.Journal.insert({'book_id':5,'book_name':'C++ Java','amt':400,'status':'Not Available'}); WriteResult({ "nInserted" : 1 })
+
+var mapfunction=function(){ emit(this.book_id,this.amt)};
+var reducefunction=function(key,value){return Array.sum(value);};
+
+db.Journal.mapReduce(mapfunction,reducefunction,
+{'out':'new'});
+{
+"result" : "new",
+"timeMillis" : 49,"counts" : { "input" : 12,
+"emit" : 12,
+"reduce" : 4,
+"output" : 5
+},
+"ok" : 1
+}
+
+db.Journal.mapReduce(mapfunction,reducefunction,
+{'out':'new'}).find().pretty();
+{ "_id" : 1, "value" : 1200 }
+{ "_id" : 2, "value" : 700 }
+{ "_id" : 3, "value" : 350 }
+{ "_id" : 4, "value" : 300 }
+{ "_id" : 5, "value" : 1200 }
+>
+>
+db.new.find().pretty();
+{ "_id" : 1, "value" : 1200 }
+{ "_id" : 2, "value" : 700 }
+{ "_id" : 3, "value" : 350 }
+{ "_id" : 4, "value" : 300 }
+{ "_id" : 5, "value" : 1200 }
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Name:- Kadlag Narendra Vilas
+Roll no:- 05
+Batch:- T1
+Group B:- Practical No. 04
+Title : Write a program to implement MogoDB database connectivity with PHP/ python/Java Implement Database navigation operations (add, delete, edit etc. ) using ODBC/JDBC.
+*********************************************************************************
+import java.net.UnknownHostException; import java.util.Scanner;
+import com.mongodb.*;
+public class DatabaseConnectivity { private static void choice_input(){
+System.out.println("\n1.insert data into database\n2.update database
+documents\n3.delete database documents\n4.show database collections\n5.Exit");
+}
+public static void main(String[] args) { String key, value;
+Scanner scanner = new Scanner(System.in); int choice;
+try {
+Mongo mongo = new Mongo("localhost", 27017); DB db = mongo.getDB("myDb");
+DBCollection collection = db.getCollection("dummyColl"); do{
+choice_input();
+System.out.println("Enter your choice: "); choice = scanner.nextInt();switch (choice){ case 1:
+BasicDBObject document = new BasicDBObject(); String ch;
+do{
+System.out.println("Enter key: "); key = scanner.next(); System.out.println("Enter value: "); value = scanner.next();
+
+
+document.put(key, value);
+System.out.println("Do you want to enter more(y/n)? "); ch = scanner.next();
+} while (!ch.equals("n")); collection.insert(document); break;
+case 2:
+BasicDBObject searchObj = new BasicDBObject(); System.out.println("Enter searched key: ");
+key = scanner.next(); System.out.println("Enter searched value: "); value = scanner.next();
+searchObj.put(key, value);
+BasicDBObject newObj = new BasicDBObject(); System.out.println("Enter new key: ");
+key = scanner.next(); System.out.println("Enter new value: "); value = scanner.next();
+newObj.put(key, value); collection.update(searchObj, newObj); break;
+case 3:
+System.out.println("Enter removable key: ");key = scanner.next(); System.out.println("Enter removable value: ");
+value = scanner.next();
+BasicDBObject removableObj = new BasicDBObject(); removableObj.put(key, value); collection.remove(removableObj);
+break; case 4:
+DBCursor cursorDoc = collection.find(); while (cursorDoc.hasNext()) { System.out.println(cursorDoc.next());
+}
+break; case 5:
+System.exit(0); break;
+}
+} while(choice != 6);
+} catch (UnknownHostException | MongoException e) { e.printStackTrace();
+}
+}
+}
+
+    Output      
+1.insert data into database 2.update database documents 3.delete database documents 4.show database collections 5.Exit
+Enter your choice:
+1
+Enter key:2 Enter value:
+harish
+Do you want to enter more(y/n)? N
+1.insert data into database 2.update database documents 3.delete database documents 4.show database collections 5.Exit
+Enter your choice:
+2
+Enter searched key:
+2
+Enter searched value:
+harish
+Enter new key:
+1
+Enter new value:
+Sam
+insert data into database 2.update database documents 3.delete database documents 4.show database collections 5.Exit
+Enter your choice:
+4{
+"_id" : { "$oid" : "5bb453bce4b0283ac9d3205d"} , "1" : "sam"} 1.insert data into database
+update database documents 3.delete database documents 4.show database collections5.Exit Enter your choice:
+3
+Enter removable key:
+
+3
+Enter removable value:
+hari
+insert data into database 2.update database documents 3.delete database documents 4.show database collections 5.Exit
+Enter your choice:
+4{
+"_id" : { "$oid" : "5bb453bce4b0283ac9d3205d"} , "1" : "sam"} 1.insert data into database
+update database documents 3.delete database documents 4.show database collections 5.Exit
+Enter your choice:
+5
